@@ -1,21 +1,17 @@
-import {
-  useGetContactsQuery,
-  useAddContactMutation,
-  useDeleteContactMutation,
-} from 'redux/contacts/services';
+import { ContactForm } from 'components/ContactForm/ContactForm';
+import ContactList from 'components/ContactList/ContactList';
+import Filter from 'components/Filter/Filter';
 
 const ContactsPage = () => {
-  const { data, error, isLoading } = useGetContactsQuery();
-  console.log('data:', data);
-
-  // const [addContact, { isLoading, error }] = useAddContactMutation();
-  // const fetchRequest = async () => {
-  //   const result = await addContact({ name: 'john', number: '123-12-1234' });
-  //   console.log(result);
-  // };
-  //fetchRequest();
-
-  return <h1>Contacts</h1>;
+  return (
+    <>
+      <h1>Phonebook</h1>
+      <ContactForm />
+      <h2>Contacts</h2>
+      <Filter />
+      <ContactList />
+    </>
+  );
 };
 
 export default ContactsPage;
