@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  Button,
-  Container,
-} from '@mui/material';
+import { Typography, Container } from '@mui/material';
 
 const HomePage = () => {
   return (
