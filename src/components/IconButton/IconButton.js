@@ -1,6 +1,6 @@
 import React from 'react';
-//import PropTypes from 'prop-types';
-import css from './IconButton.module.css';
+import PropTypes from 'prop-types';
+import { Button } from '@mui/material';
 import { ReactComponent as DeleteIcon } from 'components/Icons/bin.svg';
 import { LoaderButton } from 'components/ContactForm/Loader/LoaderButton';
 
@@ -11,26 +11,27 @@ export default function IconButton({
   ...allyProps
 }) {
   return (
-    <button
+    <Button
       type="button"
-      className={css.iconButton}
+      fullWidth
+      variant="contained"
       onClick={onClick}
       {...allyProps}
     >
       {disabled ? (
         <LoaderButton />
       ) : (
-        <DeleteIcon width="15" height="15" fill="blue" />
+        <DeleteIcon width="15" height="15" fill="white" />
       )}
-    </button>
+    </Button>
   );
 }
-// IconButton.defaultProps = {
-//   onClick: () => null,
-//   children: null,
-// };
-// IconButton.propTypes = {
-//   onClick: PropTypes.func,
-//   children: PropTypes.node,
-//   'aria-label': PropTypes.string.isRequired,
-// };
+IconButton.defaultProps = {
+  onClick: () => null,
+  children: null,
+};
+IconButton.propTypes = {
+  onClick: PropTypes.func,
+  children: PropTypes.node,
+  'aria-label': PropTypes.string.isRequired,
+};

@@ -1,11 +1,15 @@
-import { NavLink } from 'react-router-dom';
+import { Typography, Box } from '@mui/material';
+import { Link, AuthNavBox } from './AuthNav.styled';
 
 export const AuthNav = () => {
   return (
-    <>
-      {' '}
-      <NavLink to="/register">Register</NavLink>
-      <NavLink to="/login">login</NavLink>
-    </>
+    <Box component={AuthNavBox}>
+      <Typography to="/register" component={Link} sx={{ marginRight: '40px' }}>
+        Register
+      </Typography>
+      <Typography to="/login" component={Link}>
+        Login
+      </Typography>
+    </Box>
   );
 };

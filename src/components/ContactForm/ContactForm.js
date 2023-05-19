@@ -1,16 +1,24 @@
-import { nanoid } from 'nanoid';
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@mui/material';
 import React, { useState } from 'react';
-//import { useAddContactMutation, useGetContactsQuery } from 'redux/services';
 import {
   useAddContactMutation,
   useGetContactsQuery,
 } from 'redux/contacts/services';
 import { LoaderButton } from './Loader/LoaderButton';
-import css from './ContactForm.module.css';
+import { Snack } from 'components/Snack/Snack';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [isSnackOpen, setSnackOpen] = useState(false);
   const { data } = useGetContactsQuery();
 
   const handleInputChange = event => {
@@ -28,12 +36,10 @@ export const ContactForm = () => {
   };
   const [addContact, { isLoading }] = useAddContactMutation();
 
-  const handleSubmit = event => {
+  const handleSubmitForm = event => {
     event.preventDefault();
     if (checkContactAsCurrent(name)) {
-      alert(`${name} is already is in contacts`);
-      setName('');
-      setNumber('');
+      setSnackOpen(true);
       return;
     }
     const fetchAddContact = async () => {
@@ -48,52 +54,82 @@ export const ContactForm = () => {
     return data.some(({ name }) => name === newName);
   };
 
-  const styledButtonAfterClick = event => {
-    event.target.classList.add(`${css.active}`);
-    setTimeout(() => {
-      event.target.classList.remove(`${css.active}`);
-    }, 300);
-  };
-
-  const idName = nanoid();
-  const idNumber = nanoid();
-
   return (
-    <form onSubmit={handleSubmit} className={css.form}>
-      <label htmlFor={idName} className={css.formLabel}>
-        Name
-      </label>
-      <input
-        type="text"
-        name="name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required
-        value={name}
-        id={idName}
-        onChange={handleInputChange}
+    <>
+      <Snack
+        isOpen={isSnackOpen}
+        handleClose={() => {
+          setSnackOpen(false);
+          setName('');
+          setNumber('');
+        }}
+        name={name}
       />
-      <label htmlFor={idNumber} className={css.formLabel}>
-        Phone
-      </label>
-      <input
-        type="tel"
-        name="number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        required
-        value={number}
-        id={idNumber}
-        onChange={handleInputChange}
-      />
-      <button
-        type="submit"
-        className={css.button}
-        onClick={styledButtonAfterClick}
-        disabled={isLoading}
-      >
-        {isLoading ? <LoaderButton /> : 'Add Contact'}
-      </button>
-    </form>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h5" variant="h4">
+            Phonebook
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmitForm}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="standard"
+                  required
+                  fullWidth
+                  value={name}
+                  id="name"
+                  label="Name"
+                  name="name"
+                  type="text"
+                  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                  autoComplete="name"
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="standard"
+                  required
+                  fullWidth
+                  value={number}
+                  name="number"
+                  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                  label="Phone number"
+                  type="tel"
+                  id="phone"
+                  // autoComplete="phone"
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={isLoading}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {isLoading ? <LoaderButton /> : 'Add Contact'}
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
