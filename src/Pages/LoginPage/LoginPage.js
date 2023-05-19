@@ -35,7 +35,7 @@ const LoginPage = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign up
+          Login
         </Typography>
         <Box
           component="form"
@@ -73,7 +73,7 @@ const LoginPage = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            Login
           </Button>
         </Box>
       </Box>
